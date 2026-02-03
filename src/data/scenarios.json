@@ -1,0 +1,48 @@
+{
+  "scenarios": [
+    {
+      "id": "domestic_abuse_01",
+      "name": "Home Investigation",
+      "description": "Investigate signs of domestic abuse in a family home",
+      "scene": "home",
+      "difficulty": "medium",
+      "objectives": [
+        "Find 10 pieces of evidence",
+        "Identify the primary victim",
+        "Make appropriate safeguarding decision"
+      ],
+      "clues": [
+        {
+          "id": "broken_phone",
+          "name": "Broken Mobile Phone",
+          "description": "Phone with threatening messages and a cracked screen",
+          "position": {"x": -3, "y": 0.75, "z": -2},
+          "category": "digital_evidence",
+          "importance": "critical"
+        },
+        {
+          "id": "medical_documents",
+          "name": "Medical Documents",
+          "description": "Hospital records showing repeated injuries",
+          "position": {"x": 2, "y": 1.2, "z": -5},
+          "category": "medical_evidence",
+          "importance": "critical"
+        }
+      ],
+      "decisions": [
+        {
+          "id": "call_police",
+          "text": "Call the police immediately",
+          "outcome": "best",
+          "feedback": "Correct. Immediate danger requires emergency response."
+        },
+        {
+          "id": "talk_to_victim",
+          "text": "Talk to the victim privately first",
+          "outcome": "risky",
+          "feedback": "This could alert the abuser and increase danger."
+        }
+      ]
+    }
+  ]
+}

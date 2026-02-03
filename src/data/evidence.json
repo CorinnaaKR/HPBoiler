@@ -1,0 +1,39 @@
+{
+  "evidence": [
+    {
+      "id": "phone_messages",
+      "name": "Threatening Text Messages",
+      "category": "digital",
+      "importance": "critical",
+      "description": "Series of threatening and controlling messages"
+    },
+    {
+      "id": "bruises",
+      "name": "Physical Injuries",
+      "category": "medical",
+      "importance": "critical",
+      "description": "Unexplained bruises and injuries"
+    },
+    {
+      "id": "financial_control",
+      "name": "Financial Documents",
+      "category": "financial",
+      "importance": "high",
+      "description": "Evidence of financial control and isolation"
+    },
+    {
+      "id": "isolation_signs",
+      "name": "Social Isolation Evidence",
+      "category": "behavioral",
+      "importance": "high",
+      "description": "Signs of isolation from friends and family"
+    },
+    {
+      "id": "fear_response",
+      "name": "Fear Response",
+      "category": "behavioral",
+      "importance": "medium",
+      "description": "Observable fear and anxiety when partner is mentioned"
+    }
+  ]
+}

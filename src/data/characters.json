@@ -1,0 +1,36 @@
+{
+  "characters": [
+    {
+      "id": "victim_01",
+      "name": "Sarah",
+      "role": "victim",
+      "description": "A woman showing signs of abuse",
+      "dialogues": [
+        "Please... help me.",
+        "I don't know what to do.",
+        "It's been going on for months."
+      ],
+      "position": {"x": 0, "y": 0, "z": 0},
+      "visual": {
+        "color": "#4a90e2",
+        "height": 1.8
+      }
+    },
+    {
+      "id": "witness_01",
+      "name": "John",
+      "role": "witness",
+      "description": "A concerned neighbor",
+      "dialogues": [
+        "I've been worried about them.",
+        "I've heard shouting from their flat.",
+        "She looks scared when I see her."
+      ],
+      "position": {"x": 5, "y": 0, "z": 0},
+      "visual": {
+        "color": "#6c5ce7",
+        "height": 1.75
+      }
+    }
+  ]
+}
