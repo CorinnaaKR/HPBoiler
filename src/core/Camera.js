@@ -23,9 +23,9 @@ export class Camera {
     // Movement properties
     this.velocity = new THREE.Vector3(); // current velocity (units/sec)
     this.direction = new THREE.Vector3(); // input direction
-    this.moveSpeed = 5.0; // units per second
+    this.moveSpeed = 6.0; // units per second (faster for more responsive movement)
     this.sprintMultiplier = 1.5;
-    this.velocityDamping = 12.0; // higher = snappier, lower = smoother
+    this.velocityDamping = 10.0; // higher = snappier, but still smooth
     // Scroll (mouse wheel) movement accumulator
     this.scrollAccumulator = 0;
     this.scrollDecay = 6.0;
@@ -412,9 +412,6 @@ export class Camera {
   }
 
   update(deltaTime) {
-    // Update UI indicator on every frame to check lock status
-    this.updateLockUI();
-    
     // Check if pointer is locked (mouse look active)
     const isLocked = document.pointerLockElement === document.body || 
                      document.mozPointerLockElement === document.body;
@@ -422,7 +419,7 @@ export class Camera {
     // Apply gravity (keeps camera at eye level); movement will be allowed
     // whether or not pointer is locked. Mouse look is only active when locked.
     this.applyGravity(deltaTime);
-    
+
     // Desired speed (units/sec) based on sprint
     const speed = this.keys.sprint ? this.moveSpeed * this.sprintMultiplier : this.moveSpeed;
 
@@ -461,6 +458,7 @@ export class Camera {
       const decayT = 1 - Math.exp(-this.scrollDecay * deltaTime);
       this.scrollAccumulator = THREE.MathUtils.lerp(this.scrollAccumulator, 0, decayT);
     }
+    // Only update lock UI if pointer lock state changed (handled by onPointerLockChange)
   }
 
   onResize() {

@@ -14,35 +14,34 @@ import { EvidenceLog } from './ui/EvidenceLog.js';
 import { DecisionPanel } from './ui/DecisionPanel.js';
 import { NotificationSystem } from './ui/NotificationSystem.js';
 import { Crosshair } from './ui/Crosshair.js';
+import { ThirdPersonCamera } from './core/ThirdPersonCamera.js';
+import { CameraToggleButton } from './ui/CameraToggleButton.js';
 import './styles/main.css';
 
 class SafeguardingSimulation {
   constructor() {
     this.renderer = new Renderer();
     this.camera = new Camera(this.renderer.domElement);
-    this.sceneManager = new SceneManager(this.camera);
-    this.inputManager = new InputManager();
-    this.audioManager = new AudioManager();
-    
+    this.sceneManager = new SceneManager(this.camera); // <-- Moved up before init()
+    this.thirdPersonCamera = null;
+    this.isThirdPerson = false;
+    this.cameraToggleButton = new CameraToggleButton(() => this.toggleCameraView());
     // Game systems
     this.evidenceSystem = new EvidenceSystem();
     this.dialogueSystem = new DialogueSystem();
     this.decisionTree = new DecisionTree();
     this.progressTracker = new ProgressTracker();
     this.feedbackSystem = new FeedbackSystem();
-    
     // UI systems
     this.hud = new HUD();
     this.evidenceLog = new EvidenceLog();
     this.decisionPanel = new DecisionPanel();
     this.notificationSystem = new NotificationSystem();
     this.crosshair = new Crosshair();
-    
     this.clock = new THREE.Clock();
     this.isRunning = false;
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
-    
     this.init();
   }
 
@@ -113,6 +112,24 @@ class SafeguardingSimulation {
     }
   }
 
+  toggleCameraView() {
+    if (!this.thirdPersonCamera) {
+      // Try to find a player or fallback to camera
+      const player = this.sceneManager.currentScene?.player || this.camera.camera;
+      this.thirdPersonCamera = new ThirdPersonCamera(player);
+    }
+    this.isThirdPerson = !this.isThirdPerson;
+    if (this.isThirdPerson) {
+      this.thirdPersonCamera.enable();
+      this.camera.controls.enabled = false;
+      this.cameraToggleButton.button.innerText = 'Switch to First Person';
+    } else {
+      this.thirdPersonCamera.disable();
+      this.camera.controls.enabled = true;
+      this.cameraToggleButton.button.innerText = 'Switch to Third Person';
+    }
+  }
+
   animate() {
     if (!this.isRunning) return;
     
@@ -121,14 +138,15 @@ class SafeguardingSimulation {
     const deltaTime = this.clock.getDelta();
     
     this.sceneManager.update(deltaTime);
-    this.camera.update(deltaTime);
+    if (this.isThirdPerson && this.thirdPersonCamera) {
+      this.thirdPersonCamera.update();
+      this.renderer.render(this.sceneManager.currentScene, this.thirdPersonCamera.camera);
+    } else {
+      this.camera.update(deltaTime);
+      this.renderer.render(this.sceneManager.currentScene, this.camera.camera);
+    }
     this.inputManager.update();
     this.feedbackSystem.processFeedbackQueue();
-    
-    const scene = this.sceneManager.currentScene;
-    if (scene) {
-      this.renderer.render(scene, this.camera.camera);
-    }
   }
 
   onResize() {
@@ -146,6 +164,7 @@ class SafeguardingSimulation {
     this.decisionPanel.dispose();
     this.notificationSystem.dispose();
     this.crosshair.dispose();
+    this.cameraToggleButton.dispose();
     window.removeEventListener('resize', this.onResize);
   }
 }

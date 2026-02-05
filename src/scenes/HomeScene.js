@@ -10,6 +10,13 @@ export class HomeScene extends THREE.Scene {
     this.background = new THREE.Color(0x1a1a2e);
     
     this.spawnPoint = new THREE.Vector3(0, 1.6, 5);
+    // Add a simple player mesh (capsule or box)
+    const playerGeometry = new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.3, 1.0) : new THREE.BoxGeometry(0.5, 1.8, 0.5);
+    const playerMaterial = new THREE.MeshStandardMaterial({ color: 0x2ed573 });
+    this.player = new THREE.Mesh(playerGeometry, playerMaterial);
+    this.player.position.copy(this.spawnPoint);
+    this.player.castShadow = true;
+    this.add(this.player);
     this.interactiveObjects = [];
     this.clueMarkers = [];
     this.characters = [];
